@@ -1,19 +1,35 @@
 package hellotvxlet;
-import java.awt.event.ActionEvent;
-import javax.tv.xlet.*;
-import org.havi.ui.*;
-import org.dvb.ui.*;
-import java.awt.*;
-import org.havi.ui.event.*;
 
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import javax.tv.xlet.*;
+import org.dvb.ui.DVBColor;
+import org.havi.ui.event.HActionListener;
+import org.havi.ui.*;
+import java.util.Timer;
 
 public class HelloTVXlet implements Xlet, HActionListener {
-
-  private XletContext actueleXletContext;
-  private HScene scene;
+          
+  private static XletContext actueleXletContext;
+  public static HScene scene;
   private boolean debug = true;
   private int command;
-  private HTextButton Knop1, Knop2, Knop3, Knop4;
+  public static HTextButton Groen, Rood, Geel, Blauw;
+  
+  public static DVBColor lichtGroen = new DVBColor(72, 249, 7, 255); 
+  public static DVBColor donkerGroen = new DVBColor(54, 181, 9, 255);
+  
+  public static DVBColor lichtRood = new DVBColor(255, 22, 22, 255);
+  public static DVBColor donkerRood = new DVBColor(209, 3, 0, 255);
+  
+  public static DVBColor lichtGeel = new DVBColor(255, 234, 76, 255);
+  public static DVBColor donkerGeel = new DVBColor(242, 213, 0, 255);
+  
+  public static DVBColor lichtBlauw= new DVBColor(112, 202, 255, 255);
+  public static DVBColor donkerBlauw = new DVBColor(0, 132, 209, 255);
 
     public void initXlet(XletContext context) throws XletStateChangeException {
         
@@ -25,67 +41,59 @@ public class HelloTVXlet implements Xlet, HActionListener {
      sceneTemplate.setPreference(HSceneTemplate.SCENE_SCREEN_LOCATION, new HScreenPoint(0.0f, 0.0f), HSceneTemplate.REQUIRED);
      scene = HSceneFactory.getInstance().getBestScene(sceneTemplate); // 720*580
      
-     // green dark: 54, 181, 9, 255
-     // green light: 72, 249, 7, 255
-     Knop1 = new HTextButton(" ");
-     Knop1.setSize(360,290);
-     Knop1.setLocation(0,0);
-     Knop1.setBackground(new DVBColor(54, 181, 9, 255));
-     Knop1.setBackgroundMode(HVisible.BACKGROUND_FILL);
-     scene.add(Knop1);
+     Groen = new HTextButton(" ");
+     Groen.setSize(360,290);
+     Groen.setLocation(0,0);
+     Groen.setBackground(new DVBColor(54, 181, 9, 255));
+     Groen.setBackgroundMode(HVisible.BACKGROUND_FILL);
+     scene.add(Groen);
      
-     // red dark : 209, 3, 0, 255
-     // red light : 255, 22, 22, 255
-     Knop2 = new HTextButton(" ");
-     Knop2.setSize(360,290);
-     Knop2.setLocation(360,0);
-     Knop2.setBackground(new DVBColor(209, 3, 0, 255));
-     Knop2.setBackgroundMode(HVisible.BACKGROUND_FILL);
-     scene.add(Knop2);
+     Rood = new HTextButton(" ");
+     Rood.setSize(360,290);
+     Rood.setLocation(360,0);
+     Rood.setBackground(new DVBColor(209, 3, 0, 255));
+     Rood.setBackgroundMode(HVisible.BACKGROUND_FILL);
+     scene.add(Rood);
      
-     // yellow dark: 242, 213, 0, 255
-     // yellow light: 255, 234, 76, 255
-     Knop3 = new HTextButton(" ");
-     Knop3.setSize(360,285);
-     Knop3.setLocation(0,290);
-     Knop3.setBackground(new DVBColor(242, 213, 0, 255));
-     Knop3.setBackgroundMode(HVisible.BACKGROUND_FILL);
-     scene.add(Knop3);
+     Geel = new HTextButton(" ");
+     Geel.setSize(360,285);
+     Geel.setLocation(0,290);
+     Geel.setBackground(new DVBColor(242, 213, 0, 255));
+     Geel.setBackgroundMode(HVisible.BACKGROUND_FILL);
+     scene.add(Geel);
      
-     //blue dark : 0, 132, 209, 255
-     // blue light: 112, 202, 255, 255
-     Knop4 = new HTextButton(" ");
-     Knop4.setSize(360,285);
-     Knop4.setLocation(360,290);
-     Knop4.setBackground(new DVBColor(0, 132, 209, 255));
-     Knop4.setBackgroundMode(HVisible.BACKGROUND_FILL); 
-     scene.add(Knop4);
+     Blauw = new HTextButton(" ");
+     Blauw.setSize(360,285);
+     Blauw.setLocation(360,290);
+     Blauw.setBackground(new DVBColor(0, 132, 209, 255));
+     Blauw.setBackgroundMode(HVisible.BACKGROUND_FILL); 
+     scene.add(Blauw);
 
      //beweging pijltjes toetsen
-     Knop1.setFocusTraversal(null, Knop3, null, Knop2);
-     Knop2.setFocusTraversal(null, Knop4, Knop1, null);
-     Knop3.setFocusTraversal(Knop1, null, null, Knop4);
-     Knop4.setFocusTraversal(Knop2, null, Knop3, null);
-     Knop1.requestFocus();
+     Groen.setFocusTraversal(null, Geel, null, Rood);
+     Rood.setFocusTraversal(null, Blauw, Groen, null);
+     Geel.setFocusTraversal(Groen, null, null, Blauw);
+     Blauw.setFocusTraversal(Rood, null, Geel, null);
+     Groen.requestFocus();
      
      // button events
-     Knop1.setActionCommand("1");
-     Knop2.setActionCommand("2");
-     Knop3.setActionCommand("3");
-     Knop4.setActionCommand("4");
+     Groen.setActionCommand("1");
+     Rood.setActionCommand("2");
+     Geel.setActionCommand("3");
+     Blauw.setActionCommand("4");
      
-     Knop1.addHActionListener(this);
-     Knop2.addHActionListener(this);
-     Knop3.addHActionListener(this);
-     Knop4.addHActionListener(this);
+     Groen.addHActionListener(this);
+     Rood.addHActionListener(this);
+     Geel.addHActionListener(this);
+     Blauw.addHActionListener(this);
      
     }
 
     public void startXlet() throws XletStateChangeException {
        if (debug) System.out.println("Xlet Starten");
-       
        scene.validate();
        scene.setVisible(true);
+             
     }
 
     // vanaf hier enkel gebruiken bij meerdere Xlets
@@ -96,26 +104,91 @@ public class HelloTVXlet implements Xlet, HActionListener {
     public void destroyXlet(boolean unconditional) throws XletStateChangeException{
      
     }
-
+    public void WachtSecond()
+    {
+        for(int i =0; i<50000;i++)
+        {System.out.println(i);}
+    }
+    
+    public void GroenSecondlicht()
+    {
+     Groen = new HTextButton(" ");
+     Groen.setSize(360,290);
+     Groen.setLocation(0,0);
+     Groen.setBackground(new DVBColor(lichtGroen));
+     Groen.setBackgroundMode(HVisible.BACKGROUND_FILL);
+     scene.add(Groen);
+     scene.popToFront(Groen);
+    }
+    
+    public void RoodSecondLicht()
+    {
+     Rood = new HTextButton(" ");
+     Rood.setSize(360,290);
+     Rood.setLocation(360,0);
+     Rood.setBackground(new DVBColor(lichtRood));
+     Rood.setBackgroundMode(HVisible.BACKGROUND_FILL);
+     scene.add(Rood);
+     scene.popToFront(Rood);
+    }
+    
+    public void GeelSecondLicht()
+    {
+     Geel = new HTextButton(" ");
+     Geel.setSize(360,290);
+     Geel.setLocation(0,290);
+     Geel.setBackground(new DVBColor(lichtGeel));
+     Geel.setBackgroundMode(HVisible.BACKGROUND_FILL);
+     scene.add(Geel);
+     scene.popToFront(Geel);
+    }
+    
+    public void BlauwSecondLicht()
+    {
+     Blauw = new HTextButton(" ");
+     Blauw.setSize(360,290);
+     Blauw.setLocation(360,290);
+     Blauw.setBackground(new DVBColor(lichtBlauw));
+     Blauw.setBackgroundMode(HVisible.BACKGROUND_FILL);
+     scene.add(Blauw);
+     scene.popToFront(Blauw);
+    }
+    
+    
     public void actionPerformed(ActionEvent e) {
+    
        command = Integer.parseInt(e.getActionCommand());
+       MijnTimerTask objMijnTimerTask = new MijnTimerTask();
+       Timer timer = new Timer();
+       
        switch(command)
        {
+          
            case 1:
-               System.out.println("1");
+               System.out.println("Groen");   
+               GroenSecondlicht();
+               timer.schedule(objMijnTimerTask, 1000);
+              
                break;
            case 2:
-               System.out.println("2");
+               System.out.println("Rood");
+               RoodSecondLicht();
+               timer.schedule(objMijnTimerTask, 1000);
                break;
            case 3:
-               System.out.println("3");
+               System.out.println("Geel");
+               GeelSecondLicht();
+               timer.schedule(objMijnTimerTask, 1000);
                break;
            case 4:
-               System.out.println("4");
+               System.out.println("Blauw");
+               BlauwSecondLicht();
+               timer.schedule(objMijnTimerTask, 1000);
                break;
                
            default:
            break;
        }
+       scene.repaint();
     }
 }
