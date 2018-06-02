@@ -73,7 +73,7 @@ public class HelloTVXlet implements Xlet, HActionListener {
      Knop2.setActionCommand("2");
      Knop3.setActionCommand("3");
      Knop4.setActionCommand("4");
-     
+    
      Knop1.addHActionListener(this);
      Knop2.addHActionListener(this);
      Knop3.addHActionListener(this);

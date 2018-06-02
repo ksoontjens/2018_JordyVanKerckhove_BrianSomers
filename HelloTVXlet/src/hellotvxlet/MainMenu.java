@@ -4,47 +4,76 @@
  */
 
 package hellotvxlet;
+
 import java.awt.event.ActionEvent;
-import javax.tv.xlet.*;
+import java.util.ArrayList;
+import javax.tv.xlet.Xlet;
+import javax.tv.xlet.XletContext;
+import javax.tv.xlet.XletStateChangeException;
 import org.havi.ui.*;
-import org.dvb.ui.*;
-import java.awt.*;
-import org.havi.ui.event.*;
+import org.havi.ui.event.HActionListener;
+
+
 
 /**
  *
  * @author student
  */
-public class MainMenu {
-private Stage primaryStage;
+public class MainMenu implements Xlet, HActionListener{
 
 
-@Override
-public void start(Stage primaryStage) throws Exception {
-    this.primaryStage = primaryStage;
+
+
+
+
+public void changeScene(){
+    
+
+  
+}
+
+    public void destroyXlet(boolean unconditional) throws XletStateChangeException {
+        
+    }
+
+    public void initXlet(XletContext ctx) throws XletStateChangeException {
+         HScene scene;
+   HSceneTemplate template = new  HSceneTemplate();
+   scene = HSceneFactory.getInstance().getBestScene(template);
    
-}
+   HTextButton btn = new HTextButton("Start");
+   btn.setActionCommand("1");
+   
+   scene.add(btn);
+   
+   btn = new HTextButton("Stop");
+   scene.add(btn);
+    }
 
-public void changeScene(String fxml){
-    Parent pane = FXMLLoader.load(
-           getClass().getResource(fxml));
+    public void pauseXlet() {
+       
+    }
 
-   Scene scene = new Scene( pane );
-   primaryStage.setScene(scene);
-}
-private Stage primaryStage;
+    public void startXlet() throws XletStateChangeException {
+        
+        ArrayList arr = new ArrayList();
+        arr.add("2");
+        int i = Integer.parseInt((String) arr.get(0));
+        
+    }
 
-@Override
-public void start(Stage primaryStage) throws Exception {
-    this.primaryStage = primaryStage;
-    ...
-}
+    public void actionPerformed(ActionEvent e) {
+        int command = Integer.parseInt(e.getActionCommand());
+       switch(command){
+           case 1:
+               break;
+           default:
+               break;
+           
+       }
+       
+    }
 
-public void changeScene(String fxml){
-    Parent pane = FXMLLoader.load(
-           getClass().getResource(fxml));
 
-   Scene scene = new Scene( pane );
-   primaryStage.setScene(scene);
-}
+
 }
