@@ -167,23 +167,23 @@ public class HelloTVXlet implements Xlet, HActionListener {
            case 1:
                System.out.println("Groen");   
                GroenSecondlicht();
-               timer.schedule(objMijnTimerTask, 1000);
+               timer.schedule(objMijnTimerTask, 500);
               
                break;
            case 2:
                System.out.println("Rood");
                RoodSecondLicht();
-               timer.schedule(objMijnTimerTask, 1000);
+               timer.schedule(objMijnTimerTask, 500);
                break;
            case 3:
                System.out.println("Geel");
                GeelSecondLicht();
-               timer.schedule(objMijnTimerTask, 1000);
+               timer.schedule(objMijnTimerTask, 500);
                break;
            case 4:
                System.out.println("Blauw");
                BlauwSecondLicht();
-               timer.schedule(objMijnTimerTask, 1000);
+               timer.schedule(objMijnTimerTask, 500);
                break;
                
            default:
