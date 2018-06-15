@@ -15,7 +15,6 @@ public class MijnTimerTask extends TimerTask {
      HelloTVXlet.Groen.setBackgroundMode(HVisible.BACKGROUND_FILL);
      HelloTVXlet.scene.add(HelloTVXlet.Groen);
      HelloTVXlet.scene.popToFront(HelloTVXlet.Groen);
-   
         
      HelloTVXlet.Rood = new HTextButton(" ");
      HelloTVXlet.Rood.setSize(360,290);
