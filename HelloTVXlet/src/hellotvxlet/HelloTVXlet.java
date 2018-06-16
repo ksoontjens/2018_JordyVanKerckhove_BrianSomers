@@ -24,6 +24,7 @@ public class HelloTVXlet implements Xlet, HActionListener {
   private int[] comArr= new int[100];
   private boolean isEqual = true;
   private int buttonPressed=0;
+  
 
   public static DVBColor lichtGroen = new DVBColor(72, 249, 7, 255); 
   public static DVBColor donkerGroen = new DVBColor(54, 181, 9, 255);
@@ -53,7 +54,6 @@ public void initXlet(XletContext context) throws XletStateChangeException {
      Start.setBackground(new DVBColor (0,0,0,255));
      Start.setBackgroundMode((HVisible.BACKGROUND_FILL));
      scene.add(Start);
-     
      
      
      Groen = new HTextButton(" ");
@@ -92,7 +92,7 @@ public void initXlet(XletContext context) throws XletStateChangeException {
      Groen.requestFocus();
 
      // button eventsµ
-     Start.setActionCommand("Start");
+     Start.setActionCommand("0");
      Groen.setActionCommand("1");
      Rood.setActionCommand("2");
      Geel.setActionCommand("3");
@@ -103,6 +103,7 @@ public void initXlet(XletContext context) throws XletStateChangeException {
      Rood.addHActionListener(this);
      Geel.addHActionListener(this);
      Blauw.addHActionListener(this);
+     Start.addHActionListener(this);
      
     }
 
@@ -111,6 +112,7 @@ public void initXlet(XletContext context) throws XletStateChangeException {
          if (debug) System.out.println("Xlet Starten");
          scene.validate();
          scene.setVisible(true);
+         setBtnsInactive();
        
          Random rnd = new Random();
          int n = 0; 
@@ -215,6 +217,16 @@ public void initXlet(XletContext context) throws XletStateChangeException {
         Geel.setVisible(false);
         Rood.setVisible(false);
         Blauw.setVisible(false);
+        Start.setVisible(true);
+    }
+    
+    public void setBtnsActive ()
+    {
+        Groen.setVisible(true);
+        Geel.setVisible(true);
+        Rood.setVisible(true);
+        Blauw.setVisible(true);
+        Start.setVisible(false);
     }
   
     public void actionPerformed(ActionEvent e) {
@@ -257,7 +269,9 @@ public void initXlet(XletContext context) throws XletStateChangeException {
 
                break;
 
-               
+           case 0:
+               buttonPressed = 0;
+               setBtnsActive();
                
 
            default:
