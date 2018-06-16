@@ -1,5 +1,6 @@
 package hellotvxlet;
 
+import java.util.Random;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -17,8 +18,13 @@ public class HelloTVXlet implements Xlet, HActionListener {
   public static HScene scene;
   private boolean debug = true;
   private int command;
-  public static HTextButton Groen, Rood, Geel, Blauw;
-  
+  public static HTextButton Groen, Rood, Geel, Blauw, Start;
+  private int scoreCounter = 1;
+  private int[] userArr = new int[100];
+  private int[] comArr= new int[100];
+  private boolean isEqual = true;
+  private int buttonPressed=0;
+
   public static DVBColor lichtGroen = new DVBColor(72, 249, 7, 255); 
   public static DVBColor donkerGroen = new DVBColor(54, 181, 9, 255);
   
@@ -31,7 +37,7 @@ public class HelloTVXlet implements Xlet, HActionListener {
   public static DVBColor lichtBlauw= new DVBColor(112, 202, 255, 255);
   public static DVBColor donkerBlauw = new DVBColor(0, 132, 209, 255);
 
-    public void initXlet(XletContext context) throws XletStateChangeException {
+public void initXlet(XletContext context) throws XletStateChangeException {
         
      if (debug) System.out.println("Xlet initialiseren");
      this.actueleXletContext = context;
@@ -41,27 +47,36 @@ public class HelloTVXlet implements Xlet, HActionListener {
      sceneTemplate.setPreference(HSceneTemplate.SCENE_SCREEN_LOCATION, new HScreenPoint(0.0f, 0.0f), HSceneTemplate.REQUIRED);
      scene = HSceneFactory.getInstance().getBestScene(sceneTemplate); // 720*580
      
+     Start = new HTextButton ("Start");
+     Start.setSize(360,250);
+     Start.setLocation(180,180);
+     Start.setBackground(new DVBColor (0,0,0,255));
+     Start.setBackgroundMode((HVisible.BACKGROUND_FILL));
+     scene.add(Start);
+     
+     
+     
      Groen = new HTextButton(" ");
      Groen.setSize(360,290);
      Groen.setLocation(0,0);
      Groen.setBackground(new DVBColor(54, 181, 9, 255));
      Groen.setBackgroundMode(HVisible.BACKGROUND_FILL);
      scene.add(Groen);
-     
+
      Rood = new HTextButton(" ");
      Rood.setSize(360,290);
      Rood.setLocation(360,0);
      Rood.setBackground(new DVBColor(209, 3, 0, 255));
      Rood.setBackgroundMode(HVisible.BACKGROUND_FILL);
      scene.add(Rood);
-     
+
      Geel = new HTextButton(" ");
      Geel.setSize(360,285);
      Geel.setLocation(0,290);
      Geel.setBackground(new DVBColor(242, 213, 0, 255));
      Geel.setBackgroundMode(HVisible.BACKGROUND_FILL);
      scene.add(Geel);
-     
+
      Blauw = new HTextButton(" ");
      Blauw.setSize(360,285);
      Blauw.setLocation(360,290);
@@ -75,13 +90,15 @@ public class HelloTVXlet implements Xlet, HActionListener {
      Geel.setFocusTraversal(Groen, null, null, Blauw);
      Blauw.setFocusTraversal(Rood, null, Geel, null);
      Groen.requestFocus();
-     
-     // button events
+
+     // button eventsµ
+     Start.setActionCommand("Start");
      Groen.setActionCommand("1");
      Rood.setActionCommand("2");
      Geel.setActionCommand("3");
      Blauw.setActionCommand("4");
-     
+
+
      Groen.addHActionListener(this);
      Rood.addHActionListener(this);
      Geel.addHActionListener(this);
@@ -89,11 +106,54 @@ public class HelloTVXlet implements Xlet, HActionListener {
      
     }
 
-    public void startXlet() throws XletStateChangeException {
-       if (debug) System.out.println("Xlet Starten");
-       scene.validate();
-       scene.setVisible(true);
+    public void startXlet() throws XletStateChangeException 
+    {
+         if (debug) System.out.println("Xlet Starten");
+         scene.validate();
+         scene.setVisible(true);
+       
+         Random rnd = new Random();
+         int n = 0; 
+
+         // Vult computer array met 100 random nummers
+         for(int i=0; i < comArr.length ; i++)
+         {
+            n = rnd.nextInt(4) +1;
+            comArr[i]= n;
+         }
+
+        while(isEqual == true)
+         {
+             System.out.println("repeat what simon says");
              
+             //tonen computer sequence
+             for(int i=0; i<scoreCounter; i++)
+             {
+                 if(comArr[i]==1) System.out.println("Groen");
+                 if(comArr[i]==2) System.out.println("Rood");
+                 if(comArr[i]==3) System.out.println("Geel");
+                 if(comArr[i]==4) System.out.println("Blauw");
+             }
+             
+             //evenveel buttons opvragen als computer sequence
+             for(int i=0;  i < scoreCounter; i++)
+             {
+                 System.out.println("waiting for a button");
+                 synchronized(this){try {
+                        wait();
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }}
+                 userArr[i] = buttonPressed;
+                 if(comArr[i] != userArr[i])
+                 {
+                     isEqual = false;
+                     System.out.println("wrong button");
+                     break;
+                 }
+             }
+             scoreCounter++;
+         }  
     }
 
     // vanaf hier enkel gebruiken bij meerdere Xlets
@@ -103,11 +163,6 @@ public class HelloTVXlet implements Xlet, HActionListener {
 
     public void destroyXlet(boolean unconditional) throws XletStateChangeException{
      
-    }
-    public void WachtSecond()
-    {
-        for(int i =0; i<50000;i++)
-        {System.out.println(i);}
     }
     
     public void GroenSecondlicht()
@@ -154,7 +209,14 @@ public class HelloTVXlet implements Xlet, HActionListener {
      scene.popToFront(Blauw);
     }
     
-    
+    public void setBtnsInactive()
+    {
+        Groen.setVisible(false);
+        Geel.setVisible(false);
+        Rood.setVisible(false);
+        Blauw.setVisible(false);
+    }
+  
     public void actionPerformed(ActionEvent e) {
     
        command = Integer.parseInt(e.getActionCommand());
@@ -163,32 +225,45 @@ public class HelloTVXlet implements Xlet, HActionListener {
        
        switch(command)
        {
-          
-           case 1:
+           case 1:   
+               buttonPressed = 1;
                System.out.println("Groen");   
                GroenSecondlicht();
                timer.schedule(objMijnTimerTask, 500);
-              
+
                break;
+               
            case 2:
+               buttonPressed  = 2;
                System.out.println("Rood");
                RoodSecondLicht();
                timer.schedule(objMijnTimerTask, 500);
+
                break;
+               
            case 3:
+                buttonPressed  = 3;
                System.out.println("Geel");
                GeelSecondLicht();
                timer.schedule(objMijnTimerTask, 500);
+
                break;
+               
            case 4:
+               buttonPressed  = 4;
                System.out.println("Blauw");
                BlauwSecondLicht();
                timer.schedule(objMijnTimerTask, 500);
+
                break;
+
                
+               
+
            default:
            break;
        }
        scene.repaint();
+       synchronized(this){notify();}
     }
 }
