@@ -3,6 +3,8 @@ package hellotvxlet;
 import java.util.Random;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -11,9 +13,14 @@ import org.dvb.ui.DVBColor;
 import org.havi.ui.event.HActionListener;
 import org.havi.ui.*;
 import java.util.Timer;
+import org.dvb.event.EventManager;
+import org.dvb.event.UserEvent;
+import org.dvb.event.UserEventListener;
+import org.dvb.event.UserEventRepository;
+import org.havi.ui.event.HRcEvent;
 
 
-public class HelloTVXlet implements Xlet, HActionListener {
+public class HelloTVXlet implements Xlet, HActionListener, UserEventListener {
           
   private static XletContext actueleXletContext;
   public static HScene scene;
@@ -79,6 +86,8 @@ public void initXlet(XletContext context) throws XletStateChangeException {
      Rood.setBackground(new DVBColor(209, 3, 0, 255));
      Rood.setBackgroundMode(HVisible.BACKGROUND_FILL);
      scene.add(Rood);
+     
+     
 
      Geel = new HTextButton(" ");
      Geel.setSize(360,285);
@@ -129,6 +138,12 @@ public void initXlet(XletContext context) throws XletStateChangeException {
          scene.validate();
          scene.setVisible(true);
          setBtnsInactive();
+         
+         EventManager em = EventManager.getInstance();
+         UserEventRepository eur = new UserEventRepository("KeyPresses");
+         eur.addAllColourKeys();
+         
+         em.addUserEventListener(this, eur);
        
         Game();
          
@@ -325,6 +340,38 @@ public void initXlet(XletContext context) throws XletStateChangeException {
                 finalscore=scoreCounter++;
             }  
         }
+    public void keyActionPerformed(UserEvent e){
+        Timer timer = new Timer();
+        MijnTimerTask objMijnTimerTask = new MijnTimerTask();
+        if (e.getType() == KeyEvent.KEY_PRESSED){
+            switch (e.getCode()){
+                case HRcEvent.VK_COLORED_KEY_0:
+                    System.out.println("Rood");
+               RoodSecondLicht();
+               timer.schedule(objMijnTimerTask, 500);
+               break;
+                    
+                case HRcEvent.VK_COLORED_KEY_1:
+                    System.out.println("Geel");
+               GeelSecondLicht();
+               timer.schedule(objMijnTimerTask, 500);
+               break;
+                case HRcEvent.VK_COLORED_KEY_2:
+                System.out.println("Groen");   
+                    GroenSecondlicht();
+                    timer.schedule(objMijnTimerTask, 500);
+                    break;
+               
+                case HRcEvent.VK_COLORED_KEY_3:
+                    System.out.println("Blauw");
+               BlauwSecondLicht();
+               timer.schedule(objMijnTimerTask, 500);
+               break;
+                    
+                    
+            }
+        }
+    }
     
     public void actionPerformed(ActionEvent e) {
     
@@ -377,5 +424,9 @@ public void initXlet(XletContext context) throws XletStateChangeException {
            break;
        }  
         synchronized(this){notify();} 
+    }
+
+    public void userEventReceived(UserEvent arg0) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
