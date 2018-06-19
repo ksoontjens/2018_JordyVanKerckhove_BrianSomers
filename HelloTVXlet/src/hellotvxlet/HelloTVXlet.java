@@ -21,7 +21,7 @@ public class HelloTVXlet implements Xlet, HActionListener {
   private int command;
   public static HTextButton Groen, Rood, Geel, Blauw, Start,  Quit, HighScore;
   private int scoreCounter = 1;
-  public int finalscore;
+  public int finalscore =0;
   public static int[] userArr = new int[100];
   public static int[] comArr= new int[100];
   private boolean isEqual = true;
@@ -57,13 +57,6 @@ public void initXlet(XletContext context) throws XletStateChangeException {
      Start.setBackgroundMode((HVisible.BACKGROUND_FILL));
      scene.add(Start);
      Start.requestFocus();
-     
-     HighScore = new HTextButton ("Score: \n" + finalscore);
-     HighScore.setSize(360,150);
-     HighScore.setLocation(180,50);
-     HighScore.setBackground(new DVBColor (0,0,0,255));
-     HighScore.setBackgroundMode((HVisible.BACKGROUND_FILL));
-     scene.add(HighScore);
      
      
      Quit = new HTextButton ("Quit");
@@ -199,7 +192,6 @@ public void initXlet(XletContext context) throws XletStateChangeException {
         Geel.setVisible(false);
         Rood.setVisible(false);
         Blauw.setVisible(false);
-        HighScore.setVisible(false);
         Quit.setVisible(true);
         Start.setVisible(true);
         Start.requestFocus();
@@ -223,10 +215,18 @@ public void initXlet(XletContext context) throws XletStateChangeException {
         Rood.setVisible(false);
         Blauw.setVisible(false);
         Quit.setVisible(true);
-        HighScore.setVisible(true);
+        
+        HighScore = new HTextButton("Score : \n" + finalscore);
+        HighScore.setSize(360,150);
+        HighScore.setLocation(180,50);
+        HighScore.setBackground(new DVBColor (0,0,0,255));
+        HighScore.setBackgroundMode((HVisible.BACKGROUND_FILL));
+        scene.add(HighScore);
+        
         scene.popToFront(Quit);
         scene.popToFront(HighScore);
         Quit.requestFocus();
+        
         
     }
   
@@ -337,12 +337,6 @@ public void initXlet(XletContext context) throws XletStateChangeException {
            case 0:
                buttonPressed = 0;
                setBtnsActive();
-               scoreCounter = 1;
-               isEqual = true;
-               int[] userArr = {};
-               int[] comArr = {};
-               
-               
                System.out.println("start pressed");
                break;
                             
