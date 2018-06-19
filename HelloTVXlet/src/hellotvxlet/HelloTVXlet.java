@@ -26,7 +26,7 @@ public class HelloTVXlet implements Xlet, HActionListener, UserEventListener {
   public static HScene scene;
   private boolean debug = true;
   private int command;
-  public static HTextButton Groen, Rood, Geel, Blauw, Start,  Quit, HighScore;
+  public static HTextButton Groen, Rood, Geel, Blauw, Start,  Quit, HighScore, HowToPlay, Background, SimonSays;
   private int scoreCounter = 1;
   public int finalscore =0;
   public static int[] userArr = new int[100];
@@ -57,21 +57,35 @@ public void initXlet(XletContext context) throws XletStateChangeException {
      sceneTemplate.setPreference(HSceneTemplate.SCENE_SCREEN_LOCATION, new HScreenPoint(0.0f, 0.0f), HSceneTemplate.REQUIRED);
      scene = HSceneFactory.getInstance().getBestScene(sceneTemplate); // 720*580
      
+     SimonSays = new HTextButton ("Simon Says");
+     SimonSays.setSize(380,120);
+     SimonSays.setLocation(170,30);
+     SimonSays.setBackground(donkerBlauw);
+     SimonSays.setBackgroundMode((HVisible.BACKGROUND_FILL));
+     scene.add(SimonSays);
+     
      Start = new HTextButton ("Start");
-     Start.setSize(360,150);
-     Start.setLocation(180,50);
-     Start.setBackground(new DVBColor (0,0,0,255));
+     Start.setSize(360,100);
+     Start.setLocation(180,170);
+     Start.setBackground(donkerGroen);
      Start.setBackgroundMode((HVisible.BACKGROUND_FILL));
      scene.add(Start);
      Start.requestFocus();
      
      
      Quit = new HTextButton ("Quit");
-     Quit.setSize(360,150);
-     Quit.setLocation(180,250);
-     Quit.setBackground(new DVBColor (0,0,0,255));
+     Quit.setSize(360,100);
+     Quit.setLocation(180,280);
+     Quit.setBackground(donkerRood);
      Quit.setBackgroundMode((HVisible.BACKGROUND_FILL));
      scene.add(Quit);
+     
+     HowToPlay = new HTextButton ("Arrowkeys = move || Enter = select");
+     HowToPlay.setSize(500,100);
+     HowToPlay.setLocation(100,400);
+     HowToPlay.setBackground(donkerGeel);
+     HowToPlay.setBackgroundMode((HVisible.BACKGROUND_FILL));
+     scene.add(HowToPlay);
      
      Groen = new HTextButton(" ");
      Groen.setSize(360,290);
@@ -103,7 +117,12 @@ public void initXlet(XletContext context) throws XletStateChangeException {
      Blauw.setBackgroundMode(HVisible.BACKGROUND_FILL); 
      scene.add(Blauw);
      
-    
+    Background= new HTextButton ("");
+    Background.setSize(720,580);
+    Background.setLocation(0,0);
+    Background.setBackground(lichtBlauw);
+    Background.setBackgroundMode(HVisible.BACKGROUND_FILL);
+    scene.add(Background);
      
 
      //beweging pijltjes toetsen
@@ -209,6 +228,7 @@ public void initXlet(XletContext context) throws XletStateChangeException {
         Blauw.setVisible(false);
         Quit.setVisible(true);
         Start.setVisible(true);
+        HowToPlay.setVisible(true);
         Start.requestFocus();
     }
     
@@ -220,6 +240,7 @@ public void initXlet(XletContext context) throws XletStateChangeException {
         Blauw.setVisible(true);
         Start.setVisible(false);
         Quit.setVisible(false);
+        HowToPlay.setVisible(false);
         Groen.requestFocus();
     }
     
@@ -234,7 +255,7 @@ public void initXlet(XletContext context) throws XletStateChangeException {
         HighScore = new HTextButton("Score : \n" + finalscore);
         HighScore.setSize(360,150);
         HighScore.setLocation(180,50);
-        HighScore.setBackground(new DVBColor (0,0,0,255));
+        HighScore.setBackground(donkerGroen);
         HighScore.setBackgroundMode((HVisible.BACKGROUND_FILL));
         scene.add(HighScore);
         
@@ -340,38 +361,7 @@ public void initXlet(XletContext context) throws XletStateChangeException {
                 finalscore=scoreCounter++;
             }  
         }
-    public void keyActionPerformed(UserEvent e){
-        Timer timer = new Timer();
-        MijnTimerTask objMijnTimerTask = new MijnTimerTask();
-        if (e.getType() == KeyEvent.KEY_PRESSED){
-            switch (e.getCode()){
-                case HRcEvent.VK_COLORED_KEY_0:
-                    System.out.println("Rood");
-               RoodSecondLicht();
-               timer.schedule(objMijnTimerTask, 500);
-               break;
-                    
-                case HRcEvent.VK_COLORED_KEY_1:
-                    System.out.println("Geel");
-               GeelSecondLicht();
-               timer.schedule(objMijnTimerTask, 500);
-               break;
-                case HRcEvent.VK_COLORED_KEY_2:
-                System.out.println("Groen");   
-                    GroenSecondlicht();
-                    timer.schedule(objMijnTimerTask, 500);
-                    break;
-               
-                case HRcEvent.VK_COLORED_KEY_3:
-                    System.out.println("Blauw");
-               BlauwSecondLicht();
-               timer.schedule(objMijnTimerTask, 500);
-               break;
-                    
-                    
-            }
-        }
-    }
+ 
     
     public void actionPerformed(ActionEvent e) {
     
