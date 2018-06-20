@@ -1,5 +1,15 @@
+<<<<<<< HEAD
 
 package hellotvxlet;
+=======
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package hellotvxlet;
+
+>>>>>>> master
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import javax.tv.xlet.Xlet;
@@ -8,6 +18,7 @@ import javax.tv.xlet.XletStateChangeException;
 import org.havi.ui.*;
 import org.havi.ui.event.HActionListener;
 
+<<<<<<< HEAD
 public class MainMenu implements Xlet, HActionListener{
 
 public void changeScene(){
@@ -21,6 +32,33 @@ public void destroyXlet(boolean unconditional) throws XletStateChangeException {
     
    public void initXlet(XletContext ctx) throws XletStateChangeException {
    HScene scene;
+=======
+
+
+/**
+ *
+ * @author student
+ */
+public class MainMenu implements Xlet, HActionListener{
+
+
+
+
+
+
+public void changeScene(){
+    
+
+  
+}
+
+    public void destroyXlet(boolean unconditional) throws XletStateChangeException {
+        
+    }
+
+    public void initXlet(XletContext ctx) throws XletStateChangeException {
+         HScene scene;
+>>>>>>> master
    HSceneTemplate template = new  HSceneTemplate();
    scene = HSceneFactory.getInstance().getBestScene(template);
    

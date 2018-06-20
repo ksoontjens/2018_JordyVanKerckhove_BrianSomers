@@ -83,6 +83,7 @@ public void initXlet(XletContext context) throws XletStateChangeException {
      Groen.requestFocus();
 
      // button events
+<<<<<<< HEAD
      Groen.setActionCommand("1");
      Rood.setActionCommand("2");
      Geel.setActionCommand("3");
@@ -93,6 +94,17 @@ public void initXlet(XletContext context) throws XletStateChangeException {
      Rood.addHActionListener(this);
      Geel.addHActionListener(this);
      Blauw.addHActionListener(this);
+=======
+     Knop1.setActionCommand("1");
+     Knop2.setActionCommand("2");
+     Knop3.setActionCommand("3");
+     Knop4.setActionCommand("4");
+    
+     Knop1.addHActionListener(this);
+     Knop2.addHActionListener(this);
+     Knop3.addHActionListener(this);
+     Knop4.addHActionListener(this);
+>>>>>>> master
      
     }
 
