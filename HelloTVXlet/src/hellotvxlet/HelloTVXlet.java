@@ -3,6 +3,8 @@ package hellotvxlet;
 import java.util.Random;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -11,16 +13,22 @@ import org.dvb.ui.DVBColor;
 import org.havi.ui.event.HActionListener;
 import org.havi.ui.*;
 import java.util.Timer;
+import org.dvb.event.EventManager;
+import org.dvb.event.UserEvent;
+import org.dvb.event.UserEventListener;
+import org.dvb.event.UserEventRepository;
+import org.havi.ui.event.HRcEvent;
 
 
-public class HelloTVXlet implements Xlet, HActionListener {
+public class HelloTVXlet implements Xlet, HActionListener, UserEventListener {
           
   private static XletContext actueleXletContext;
   public static HScene scene;
   private boolean debug = true;
   private int command;
-  public static HTextButton Groen, Rood, Geel, Blauw, Start;
+  public static HTextButton Groen, Rood, Geel, Blauw, Start,  Quit, HighScore, HowToPlay, Background, SimonSays;
   private int scoreCounter = 1;
+  public int finalscore =0;
   public static int[] userArr = new int[100];
   public static int[] comArr= new int[100];
   private boolean isEqual = true;
@@ -49,14 +57,35 @@ public void initXlet(XletContext context) throws XletStateChangeException {
      sceneTemplate.setPreference(HSceneTemplate.SCENE_SCREEN_LOCATION, new HScreenPoint(0.0f, 0.0f), HSceneTemplate.REQUIRED);
      scene = HSceneFactory.getInstance().getBestScene(sceneTemplate); // 720*580
      
+     SimonSays = new HTextButton ("Simon Says");
+     SimonSays.setSize(380,120);
+     SimonSays.setLocation(170,30);
+     SimonSays.setBackground(donkerBlauw);
+     SimonSays.setBackgroundMode((HVisible.BACKGROUND_FILL));
+     scene.add(SimonSays);
+     
      Start = new HTextButton ("Start");
-     Start.setSize(360,250);
-     Start.setLocation(180,180);
-     Start.setBackground(new DVBColor (0,0,0,255));
+     Start.setSize(360,100);
+     Start.setLocation(180,170);
+     Start.setBackground(donkerGroen);
      Start.setBackgroundMode((HVisible.BACKGROUND_FILL));
      scene.add(Start);
      Start.requestFocus();
      
+     
+     Quit = new HTextButton ("Quit");
+     Quit.setSize(360,100);
+     Quit.setLocation(180,280);
+     Quit.setBackground(donkerRood);
+     Quit.setBackgroundMode((HVisible.BACKGROUND_FILL));
+     scene.add(Quit);
+     
+     HowToPlay = new HTextButton ("Arrowkeys = move || Enter = select");
+     HowToPlay.setSize(500,100);
+     HowToPlay.setLocation(100,400);
+     HowToPlay.setBackground(donkerGeel);
+     HowToPlay.setBackgroundMode((HVisible.BACKGROUND_FILL));
+     scene.add(HowToPlay);
      
      Groen = new HTextButton(" ");
      Groen.setSize(360,290);
@@ -71,6 +100,8 @@ public void initXlet(XletContext context) throws XletStateChangeException {
      Rood.setBackground(new DVBColor(209, 3, 0, 255));
      Rood.setBackgroundMode(HVisible.BACKGROUND_FILL);
      scene.add(Rood);
+     
+     
 
      Geel = new HTextButton(" ");
      Geel.setSize(360,285);
@@ -85,12 +116,22 @@ public void initXlet(XletContext context) throws XletStateChangeException {
      Blauw.setBackground(new DVBColor(0, 132, 209, 255));
      Blauw.setBackgroundMode(HVisible.BACKGROUND_FILL); 
      scene.add(Blauw);
+     
+    Background= new HTextButton ("");
+    Background.setSize(720,580);
+    Background.setLocation(0,0);
+    Background.setBackground(lichtBlauw);
+    Background.setBackgroundMode(HVisible.BACKGROUND_FILL);
+    scene.add(Background);
+     
 
      //beweging pijltjes toetsen
      Groen.setFocusTraversal(null, Geel, null, Rood);
      Rood.setFocusTraversal(null, Blauw, Groen, null);
      Geel.setFocusTraversal(Groen, null, null, Blauw);
      Blauw.setFocusTraversal(Rood, null, Geel, null);
+     Start.setFocusTraversal(null,Quit,null,null);
+     Quit.setFocusTraversal(Start, null, null, null);
      Groen.requestFocus();
 
      // button eventsµ
@@ -99,6 +140,7 @@ public void initXlet(XletContext context) throws XletStateChangeException {
      Rood.setActionCommand("2");
      Geel.setActionCommand("3");
      Blauw.setActionCommand("4");
+     Quit.setActionCommand("5");
 
 
      Groen.addHActionListener(this);
@@ -106,7 +148,7 @@ public void initXlet(XletContext context) throws XletStateChangeException {
      Geel.addHActionListener(this);
      Blauw.addHActionListener(this);
      Start.addHActionListener(this);
-     
+     Quit.addHActionListener(this);
     }
 
     public void startXlet() throws XletStateChangeException 
@@ -115,92 +157,15 @@ public void initXlet(XletContext context) throws XletStateChangeException {
          scene.validate();
          scene.setVisible(true);
          setBtnsInactive();
+         
+         EventManager em = EventManager.getInstance();
+         UserEventRepository eur = new UserEventRepository("KeyPresses");
+         eur.addAllColourKeys();
+         
+         em.addUserEventListener(this, eur);
        
-        
-         Random rnd = new Random();
-         int n = 0; 
-
-         // Vult computer array met 100 random nummers
-         synchronized(this){try {
-            wait();
-         } catch (InterruptedException ex) {
-            ex.printStackTrace();
-         }}
-         for(int i=0; i < comArr.length ; i++)
-         {
-            n = rnd.nextInt(4) +1;
-            comArr[i]= n;
-         }
-
-        while(isEqual == true)
-        {
-             System.out.println("repeat what simon says");
-             //tonen computer sequence
-
-                for(int i=0; i<scoreCounter; i++)
-                {      
-                   MijnTimerTask objMijnTimerTask = new MijnTimerTask();
-                   Timer timer = new Timer();
-                   try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-                 if(comArr[i]==1)
-                 {
-                     System.out.println("Groen");
-                     GroenSecondlicht();
-                     timer.schedule(objMijnTimerTask, 1000);
-                     scene.repaint();
-                 }
-                 if(comArr[i]==2)
-                 {
-                     System.out.println("Rood");
-                    RoodSecondLicht();
-                     timer.schedule(objMijnTimerTask, 1000);
-                     scene.repaint();
-                 }
-                 if(HelloTVXlet.comArr[i]==3)
-                 {    
-                     System.out.println("Geel");
-                    GeelSecondLicht();
-                     timer.schedule(objMijnTimerTask, 1000);
-                    scene.repaint();
-                 }
-                 if(HelloTVXlet.comArr[i]==4)
-                 {
-                     System.out.println("Blauw");
-                     BlauwSecondLicht();
-                     timer.schedule(objMijnTimerTask, 1000);
-                    scene.repaint();
-                 }
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-
-             }
-             //evenveel buttons opvragen als computer sequence
-             for(int i=0;  i < scoreCounter; i++)
-             {
-                       
-                 System.out.println("waiting for a button");
-                 synchronized(this){try {
-                        wait();
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    }}
-                 userArr[i] = buttonPressed;
-                 if(comArr[i] != userArr[i])
-                 {
-                     isEqual = false;
-                     System.out.println("wrong button");
-                     break;
-                 }
-             }
-             scoreCounter++;
-         }  
+         Game();
+         
     }
 
     public void pauseXlet() {
@@ -261,7 +226,9 @@ public void initXlet(XletContext context) throws XletStateChangeException {
         Geel.setVisible(false);
         Rood.setVisible(false);
         Blauw.setVisible(false);
+        Quit.setVisible(true);
         Start.setVisible(true);
+        HowToPlay.setVisible(true);
         Start.requestFocus();
     }
     
@@ -272,9 +239,130 @@ public void initXlet(XletContext context) throws XletStateChangeException {
         Rood.setVisible(true);
         Blauw.setVisible(true);
         Start.setVisible(false);
+        Quit.setVisible(false);
+        HowToPlay.setVisible(false);
+        SimonSays.setVisible(false);
         Groen.requestFocus();
     }
+    
+    public void GameOver()
+    {
+        Groen.setVisible(false);
+        Geel.setVisible(false);
+        Rood.setVisible(false);
+        Blauw.setVisible(false);
+        Quit.setVisible(true);
+        
+        HighScore = new HTextButton("Score: " + finalscore);
+        HighScore.setSize(360,150);
+        HighScore.setLocation(180,50);
+        HighScore.setBackground(donkerGroen);
+        HighScore.setBackgroundMode((HVisible.BACKGROUND_FILL));
+        scene.add(HighScore);
+        
+        scene.popToFront(Quit);
+        scene.popToFront(HighScore);
+        Quit.requestFocus();
+    }
   
+    public void Game()
+    {
+        
+        Random rnd = new Random();
+         int n = 0; 
+
+         // Vult computer array met 100 random nummers
+         
+        synchronized(this){try {
+                wait();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }}
+            for(int i=0; i < comArr.length ; i++)
+            {
+                n = rnd.nextInt(4) +1;
+                comArr[i]= n;
+            }
+
+            while(isEqual == true)
+            {
+                System.out.println("repeat what simon says");
+             //tonen computer sequence
+
+                    for(int i=0; i<scoreCounter; i++)
+                    {      
+                    MijnTimerTask objMijnTimerTask = new MijnTimerTask();
+                    Timer timer = new Timer();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+                    if(comArr[i]==1)
+                    {
+                        System.out.println("Groen");
+                        GroenSecondlicht();
+                        timer.schedule(objMijnTimerTask, 1000);
+                        scene.repaint();
+                    }
+                    if(comArr[i]==2)
+                    {
+                        System.out.println("Rood");
+                        RoodSecondLicht();
+                        timer.schedule(objMijnTimerTask, 1000);
+                        scene.repaint();
+                    }
+                    if(HelloTVXlet.comArr[i]==3)
+                    {    
+                        System.out.println("Geel");
+                        GeelSecondLicht();
+                        timer.schedule(objMijnTimerTask, 1000);
+                        scene.repaint();
+                    }
+                    if(HelloTVXlet.comArr[i]==4)
+                    {
+                        System.out.println("Blauw");
+                        BlauwSecondLicht();
+                        timer.schedule(objMijnTimerTask, 1000);
+                        scene.repaint();
+                    }
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+
+                }
+                //evenveel buttons opvragen als computer sequence
+                for(int i=0;  i < scoreCounter; i++)
+                {
+                       
+                    System.out.println("waiting for a button");
+                    synchronized(this){try {
+                            wait();
+                        } catch (InterruptedException ex) {
+                            ex.printStackTrace();
+                        }}
+                    userArr[i] = buttonPressed;
+                    if(comArr[i] != userArr[i])
+                    {
+                        isEqual = false;
+                        System.out.println("wrong button");
+                        try {
+                            Thread.sleep(1050);
+                        } catch (InterruptedException ex) {
+                            ex.printStackTrace();
+                        }
+                        GameOver();
+                        break;
+                    }
+                }
+                finalscore=scoreCounter++;
+            
+            }  
+        }
+ 
+    
     public void actionPerformed(ActionEvent e) {
     
        command = Integer.parseInt(e.getActionCommand());
@@ -283,7 +371,13 @@ public void initXlet(XletContext context) throws XletStateChangeException {
        
        switch(command)
        {
-           case 1:   
+           case 0:
+               buttonPressed = 0;
+               setBtnsActive();
+               System.out.println("start pressed");
+               break;
+                            
+            case 1:   
                buttonPressed = 1;
                System.out.println("Groen");   
                GroenSecondlicht();
@@ -310,14 +404,20 @@ public void initXlet(XletContext context) throws XletStateChangeException {
                BlauwSecondLicht();
                timer.schedule(objMijnTimerTask, 500);
                break;
-
-           case 0:
-               buttonPressed = 0;
-               setBtnsActive();
-               System.out.println("start pressed");
+ 
+           case 5:
+               buttonPressed = 6;
+               System.exit(0);
+               break;
+               
            default:
            break;
        }  
         synchronized(this){notify();} 
+     
+    }
+
+    public void userEventReceived(UserEvent arg0) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
