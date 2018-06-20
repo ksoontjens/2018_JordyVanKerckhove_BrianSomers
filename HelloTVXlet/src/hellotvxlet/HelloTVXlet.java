@@ -124,7 +124,6 @@ public void initXlet(XletContext context) throws XletStateChangeException {
     Background.setBackgroundMode(HVisible.BACKGROUND_FILL);
     scene.add(Background);
      
-
      //beweging pijltjes toetsen
      Groen.setFocusTraversal(null, Geel, null, Rood);
      Rood.setFocusTraversal(null, Blauw, Groen, null);
@@ -134,41 +133,21 @@ public void initXlet(XletContext context) throws XletStateChangeException {
      Quit.setFocusTraversal(Start, null, null, null);
      Groen.requestFocus();
 
-<<<<<<< HEAD
      // button events
-<<<<<<< HEAD
-=======
-     // button eventsµ
      Start.setActionCommand("0");
->>>>>>> 59d1de8d9ddfeaa8a44ff137ad584038c87c401b
      Groen.setActionCommand("1");
      Rood.setActionCommand("2");
      Geel.setActionCommand("3");
      Blauw.setActionCommand("4");
      Quit.setActionCommand("5");
 
-
      Groen.addHActionListener(this);
      Rood.addHActionListener(this);
      Geel.addHActionListener(this);
      Blauw.addHActionListener(this);
-<<<<<<< HEAD
-=======
-     Knop1.setActionCommand("1");
-     Knop2.setActionCommand("2");
-     Knop3.setActionCommand("3");
-     Knop4.setActionCommand("4");
-    
-     Knop1.addHActionListener(this);
-     Knop2.addHActionListener(this);
-     Knop3.addHActionListener(this);
-     Knop4.addHActionListener(this);
->>>>>>> master
-     
-=======
+
      Start.addHActionListener(this);
      Quit.addHActionListener(this);
->>>>>>> 59d1de8d9ddfeaa8a44ff137ad584038c87c401b
     }
 
     public void startXlet() throws XletStateChangeException 
