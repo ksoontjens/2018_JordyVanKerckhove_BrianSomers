@@ -42,7 +42,7 @@ public class MijnTimerTask extends TimerTask {
      
      
      HelloTVXlet.scene.repaint();
-     
+    
     }
     
 }

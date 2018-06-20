@@ -1,0 +1,93 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+# java.lang.OutOfMemoryError: requested 65536 bytes for offset table expansion. Out of swap space?
+#
+#  Internal Error (blockOffsetTable.cpp:73), pid=5288, tid=5028
+#  Error: offset table expansion
+#
+# JRE version: 6.0_16-b01
+# Java VM: Java HotSpot(TM) Client VM (14.2-b01 mixed mode, sharing windows-x86 )
+# If you would like to submit a bug report, please visit:
+#   http://java.sun.com/webapps/bugreport/crash.jsp
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x002b6c00):  JavaThread "Unknown thread" [_thread_in_vm, id=5028, stack(0x008c0000,0x00910000)]
+
+Stack: [0x008c0000,0x00910000],  sp=0x0090fb30,  free space=318k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x1e66c7]
+V  [jvm.dll+0xa0c9c]
+V  [jvm.dll+0x1f560]
+V  [jvm.dll+0x1fc11]
+V  [jvm.dll+0x825ea]
+V  [jvm.dll+0x17e16d]
+V  [jvm.dll+0xcd572]
+V  [jvm.dll+0xc8324]
+V  [jvm.dll+0x1d5238]
+V  [jvm.dll+0xd66b4]
+V  [jvm.dll+0x1d05e2]
+V  [jvm.dll+0xfedc0]
+C  [java.exe+0x1657]
+C  [java.exe+0x1e2c]
+C  [java.exe+0x82ce]
+C  [kernel32.dll+0xb713]
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+
+Other Threads:
+
+=>0x002b6c00 (exited) JavaThread "Unknown thread" [_thread_in_vm, id=5028, stack(0x008c0000,0x00910000)]
+
+VM state:not at safepoint (not fully initialized)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Dynamic libraries:
+0x00400000 - 0x00424000 	C:\Program Files\Java\jdk1.6.0_16\jre\bin\java.exe
+0x7c900000 - 0x7c9b5000 	C:\WINDOWS\system32\ntdll.dll
+0x7c800000 - 0x7c900000 	C:\WINDOWS\system32\kernel32.dll
+0x77f40000 - 0x77feb000 	C:\WINDOWS\system32\ADVAPI32.dll
+0x77da0000 - 0x77e32000 	C:\WINDOWS\system32\RPCRT4.dll
+0x77f10000 - 0x77f21000 	C:\WINDOWS\system32\Secur32.dll
+0x7c340000 - 0x7c396000 	C:\Program Files\Java\jdk1.6.0_16\jre\bin\msvcr71.dll
+0x6d8b0000 - 0x6db3b000 	C:\Program Files\Java\jdk1.6.0_16\jre\bin\client\jvm.dll
+0x7e390000 - 0x7e421000 	C:\WINDOWS\system32\USER32.dll
+0x77e40000 - 0x77e89000 	C:\WINDOWS\system32\GDI32.dll
+0x76af0000 - 0x76b1e000 	C:\WINDOWS\system32\WINMM.dll
+0x6d860000 - 0x6d86c000 	C:\Program Files\Java\jdk1.6.0_16\jre\bin\verify.dll
+0x6d3e0000 - 0x6d3ff000 	C:\Program Files\Java\jdk1.6.0_16\jre\bin\java.dll
+0x6d340000 - 0x6d348000 	C:\Program Files\Java\jdk1.6.0_16\jre\bin\hpi.dll
+0x76bb0000 - 0x76bbb000 	C:\WINDOWS\system32\PSAPI.DLL
+0x6d8a0000 - 0x6d8af000 	C:\Program Files\Java\jdk1.6.0_16\jre\bin\zip.dll
+
+VM Arguments:
+java_command: net.java.bd.tools.security.BDCertGenerator -root 7fff0001
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+PATH=C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\TortoiseSVN\bin;C:\Program Files\Git\cmd
+USERNAME=student
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=x86 Family 6 Model 61 Stepping 4, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows XP Build 2600 Service Pack 3
+
+CPU:total 1 (1 cores per cpu, 1 threads per core) family 6 model 61 stepping 4, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2
+
+Memory: 4k page, physical 523696k(82908k free), swap 883220k(5176k free)
+
+vm_info: Java HotSpot(TM) Client VM (14.2-b01) for windows-x86 JRE (1.6.0_16-b01), built on Jul 31 2009 11:26:58 by "java_re" with MS VC++ 7.1
+
+time: Mon Jun 18 14:18:31 2018
+elapsed time: 0 seconds
+
