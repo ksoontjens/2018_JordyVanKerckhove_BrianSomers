@@ -381,6 +381,7 @@ public void initXlet(XletContext context) throws XletStateChangeException {
                System.out.println("Groen");   
                GroenSecondlicht();
                timer.schedule(objMijnTimerTask, 500);
+               scene.repaint();
                break;
                
            case 2:
@@ -388,6 +389,7 @@ public void initXlet(XletContext context) throws XletStateChangeException {
                System.out.println("Rood");
                RoodSecondLicht();
                timer.schedule(objMijnTimerTask, 500);
+               scene.repaint();
                break;
                
            case 3:
@@ -395,6 +397,7 @@ public void initXlet(XletContext context) throws XletStateChangeException {
                System.out.println("Geel");
                GeelSecondLicht();
                timer.schedule(objMijnTimerTask, 500);
+               scene.repaint();
                break;
                
            case 4:
@@ -402,6 +405,7 @@ public void initXlet(XletContext context) throws XletStateChangeException {
                System.out.println("Blauw");
                BlauwSecondLicht();
                timer.schedule(objMijnTimerTask, 500);
+               scene.repaint();
                break;
  
            case 5:
