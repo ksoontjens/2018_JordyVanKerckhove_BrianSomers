@@ -124,7 +124,6 @@ public void initXlet(XletContext context) throws XletStateChangeException {
     Background.setBackgroundMode(HVisible.BACKGROUND_FILL);
     scene.add(Background);
      
-
      //beweging pijltjes toetsen
      Groen.setFocusTraversal(null, Geel, null, Rood);
      Rood.setFocusTraversal(null, Blauw, Groen, null);
@@ -134,7 +133,7 @@ public void initXlet(XletContext context) throws XletStateChangeException {
      Quit.setFocusTraversal(Start, null, null, null);
      Groen.requestFocus();
 
-     // button eventsµ
+     // button events
      Start.setActionCommand("0");
      Groen.setActionCommand("1");
      Rood.setActionCommand("2");
@@ -142,11 +141,11 @@ public void initXlet(XletContext context) throws XletStateChangeException {
      Blauw.setActionCommand("4");
      Quit.setActionCommand("5");
 
-
      Groen.addHActionListener(this);
      Rood.addHActionListener(this);
      Geel.addHActionListener(this);
      Blauw.addHActionListener(this);
+
      Start.addHActionListener(this);
      Quit.addHActionListener(this);
     }
@@ -382,6 +381,7 @@ public void initXlet(XletContext context) throws XletStateChangeException {
                System.out.println("Groen");   
                GroenSecondlicht();
                timer.schedule(objMijnTimerTask, 500);
+               scene.repaint();
                break;
                
            case 2:
@@ -389,6 +389,7 @@ public void initXlet(XletContext context) throws XletStateChangeException {
                System.out.println("Rood");
                RoodSecondLicht();
                timer.schedule(objMijnTimerTask, 500);
+               scene.repaint();
                break;
                
            case 3:
@@ -396,6 +397,7 @@ public void initXlet(XletContext context) throws XletStateChangeException {
                System.out.println("Geel");
                GeelSecondLicht();
                timer.schedule(objMijnTimerTask, 500);
+               scene.repaint();
                break;
                
            case 4:
@@ -403,6 +405,7 @@ public void initXlet(XletContext context) throws XletStateChangeException {
                System.out.println("Blauw");
                BlauwSecondLicht();
                timer.schedule(objMijnTimerTask, 500);
+               scene.repaint();
                break;
  
            case 5:
