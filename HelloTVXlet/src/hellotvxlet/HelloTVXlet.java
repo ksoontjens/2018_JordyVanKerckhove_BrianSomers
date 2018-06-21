@@ -374,6 +374,7 @@ public void initXlet(XletContext context) throws XletStateChangeException {
                buttonPressed = 0;
                setBtnsActive();
                System.out.println("start pressed");
+               scene.repaint();
                break;
                             
             case 1:   
