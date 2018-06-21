@@ -101,8 +101,6 @@ public void initXlet(XletContext context) throws XletStateChangeException {
      Rood.setBackgroundMode(HVisible.BACKGROUND_FILL);
      scene.add(Rood);
      
-     
-
      Geel = new HTextButton(" ");
      Geel.setSize(360,285);
      Geel.setLocation(0,290);
@@ -117,12 +115,12 @@ public void initXlet(XletContext context) throws XletStateChangeException {
      Blauw.setBackgroundMode(HVisible.BACKGROUND_FILL); 
      scene.add(Blauw);
      
-    Background= new HTextButton ("");
-    Background.setSize(720,580);
-    Background.setLocation(0,0);
-    Background.setBackground(lichtBlauw);
-    Background.setBackgroundMode(HVisible.BACKGROUND_FILL);
-    scene.add(Background);
+     Background= new HTextButton ("");
+     Background.setSize(720,580);
+     Background.setLocation(0,0);
+     Background.setBackground(lichtBlauw);
+     Background.setBackgroundMode(HVisible.BACKGROUND_FILL);
+     scene.add(Background);
      
      //beweging pijltjes toetsen
      Groen.setFocusTraversal(null, Geel, null, Rood);
@@ -164,16 +162,10 @@ public void initXlet(XletContext context) throws XletStateChangeException {
          em.addUserEventListener(this, eur);
        
          Game();
-         
     }
 
-    public void pauseXlet() {
-        
-    }
-
-    public void destroyXlet(boolean unconditional) throws XletStateChangeException{
-     
-    }
+    public void pauseXlet() {}
+    public void destroyXlet(boolean unconditional) throws XletStateChangeException{}
     
     public static void GroenSecondlicht()
     {
@@ -357,7 +349,6 @@ public void initXlet(XletContext context) throws XletStateChangeException {
                     }
                 }
                 finalscore=scoreCounter++;
-            
             }  
         }
  
@@ -374,7 +365,6 @@ public void initXlet(XletContext context) throws XletStateChangeException {
                buttonPressed = 0;
                setBtnsActive();
                System.out.println("start pressed");
-               scene.repaint();
                break;
                             
             case 1:   
@@ -382,7 +372,6 @@ public void initXlet(XletContext context) throws XletStateChangeException {
                System.out.println("Groen");   
                GroenSecondlicht();
                timer.schedule(objMijnTimerTask, 500);
-               scene.repaint();
                break;
                
            case 2:
@@ -390,7 +379,6 @@ public void initXlet(XletContext context) throws XletStateChangeException {
                System.out.println("Rood");
                RoodSecondLicht();
                timer.schedule(objMijnTimerTask, 500);
-               scene.repaint();
                break;
                
            case 3:
@@ -398,7 +386,6 @@ public void initXlet(XletContext context) throws XletStateChangeException {
                System.out.println("Geel");
                GeelSecondLicht();
                timer.schedule(objMijnTimerTask, 500);
-               scene.repaint();
                break;
                
            case 4:
@@ -406,7 +393,6 @@ public void initXlet(XletContext context) throws XletStateChangeException {
                System.out.println("Blauw");
                BlauwSecondLicht();
                timer.schedule(objMijnTimerTask, 500);
-               scene.repaint();
                break;
  
            case 5:
@@ -418,7 +404,7 @@ public void initXlet(XletContext context) throws XletStateChangeException {
            break;
        }  
         synchronized(this){notify();} 
-     
+        scene.repaint();
     }
 
     public void userEventReceived(UserEvent arg0) {
